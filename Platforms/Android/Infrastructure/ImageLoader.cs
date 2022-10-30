@@ -27,7 +27,7 @@ namespace Maui.UserDialogs.Infrastructure
 
             var index = resourceName.LastIndexOf(".");
             if (index > -1)
-                resourceName = resourceName.Substring(0, index);
+                resourceName = resourceName[..index];
 
             var resourceId = res.GetIdentifier(resourceName, "drawable", con.PackageName);
             return ContextCompat.GetDrawable(Application.Context, resourceId);
