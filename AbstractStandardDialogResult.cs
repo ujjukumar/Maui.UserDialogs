@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Acr.UserDialogs
+namespace Maui.UserDialogs
 {
     public abstract class AbstractStandardDialogResult<T> : IStandardDialogResult<T>
     {

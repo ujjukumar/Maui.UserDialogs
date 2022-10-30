@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acr.UserDialogs
+namespace Maui.UserDialogs
 {
     public enum AutoCorrectionConfig
     {

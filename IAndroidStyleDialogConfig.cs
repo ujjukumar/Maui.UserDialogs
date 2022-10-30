@@ -1,4 +1,4 @@
-﻿namespace Acr.UserDialogs
+﻿namespace Maui.UserDialogs
 {
     public interface IAndroidStyleDialogConfig
     {

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace Acr.UserDialogs
+namespace Maui.UserDialogs
 {
 
     public interface IUserDialogs

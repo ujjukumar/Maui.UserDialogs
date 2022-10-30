@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace Acr.UserDialogs
+namespace Maui.UserDialogs
 {
 
     public class ActionSheetConfig : IAndroidStyleDialogConfig

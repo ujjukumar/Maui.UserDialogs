@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using Color = System.Drawing.Color;
 
-
-namespace Acr.UserDialogs
+namespace Maui.UserDialogs
 {
     public class ToastAction
     {
