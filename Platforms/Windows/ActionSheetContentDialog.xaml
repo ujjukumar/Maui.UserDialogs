@@ -27,7 +27,7 @@
                             Content="{Binding Text}"
                             Command="{Binding Action}"
                             Visibility="{Binding Visible}" />
-                    
+
                     <Button DataContext="{Binding Cancel}" 
                             Content="{Binding Text}"
                             Command="{Binding Action}"

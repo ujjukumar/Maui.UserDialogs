@@ -1,19 +1,16 @@
-﻿using System;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
+﻿using Microsoft.UI.Xaml.Controls;
 using Button = Microsoft.UI.Xaml.Controls.Button;
 
-namespace Maui.UserDialogs
-{
-    public sealed partial class DatePickerControl
-    {
-        public DatePickerControl()
-        {
-            this.InitializeComponent();
-        }
+namespace Maui.UserDialogs;
 
-        public Button OkButton => this.btnOk;
-        public Button CancelButton => this.btnCancel;
-        public CalendarView DatePicker => this.datePicker;
+public sealed partial class DatePickerControl
+{
+    public DatePickerControl()
+    {
+        this.InitializeComponent();
     }
+
+    public Button OkButton => this.btnOk;
+    public Button CancelButton => this.btnCancel;
+    public CalendarView DatePicker => this.datePicker;
 }

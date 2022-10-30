@@ -1,18 +1,14 @@
-﻿using System;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 
+namespace Maui.UserDialogs;
 
-namespace Maui.UserDialogs
+public sealed partial class ProgressContentDialog : ContentDialog
 {
-
-    public sealed partial class ProgressContentDialog : ContentDialog
+    public ProgressContentDialog()
     {
-        public ProgressContentDialog()
-        {
-            this.InitializeComponent();
+        this.InitializeComponent();
 
-            // needs to set this as per WinUI3
-            base.XamlRoot = this.XamlRoot;
-        }
+        // needs to set this as per WinUI3
+        base.XamlRoot = this.XamlRoot;
     }
 }

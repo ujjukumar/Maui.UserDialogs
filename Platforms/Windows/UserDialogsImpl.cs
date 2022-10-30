@@ -1,13 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Maui.UserDialogs.Infrastructure;
 using Maui.UserDialogs.Platforms.Windows;
 using Windows.UI.Popups;
@@ -15,7 +8,7 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.Foundation;
 using Visibility = Microsoft.UI.Xaml.Visibility;
-using Command = Maui.UserDialogs.Infrastructure.Command;
+using Command = Maui.UserDialogs.Platforms.Windows.Infrastructure.Command;
 using HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment;
 using VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment;
 using Window = Microsoft.UI.Xaml.Window;
@@ -43,7 +36,7 @@ namespace Maui.UserDialogs
         {
             var dialog = new MessageDialog(config.Message, config.Title ?? string.Empty);
             dialog.Commands.Add(new UICommand(config.OkText, x => config.OnAction?.Invoke()));
-            Windows.Foundation.IAsyncOperation<IUICommand> dialogTask = null;
+            IAsyncOperation<IUICommand> dialogTask = null;
 
             return this.DispatchAndDispose(
                 //config.UwpSubmitOnEnterKey,

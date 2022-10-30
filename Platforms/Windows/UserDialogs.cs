@@ -1,4 +1,4 @@
-﻿namespace Maui.UserDialogs;
+﻿namespace Maui.UserDialogs.Platforms.Windows;
 
 public static partial class UserDialogs
 {

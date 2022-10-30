@@ -1,5 +1,4 @@
 ﻿// Trying not to use this class (no need actually)
-
 namespace Maui.UserDialogs.Platforms.Windows;
 
 public static class Extensions

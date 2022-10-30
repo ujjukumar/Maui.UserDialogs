@@ -1,133 +1,127 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml;
-using Maui.UserDialogs.Infrastructure;
-using System.Threading.Tasks;
-using Command = Maui.UserDialogs.Infrastructure.Command;
+using Command = Maui.UserDialogs.Platforms.Windows.Infrastructure.Command;
 using Visibility = Microsoft.UI.Xaml.Visibility;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 
-namespace Maui.UserDialogs
+namespace Maui.UserDialogs.Platforms.Windows;
+
+public class ProgressDialog : IProgressDialog, INotifyPropertyChanged
 {
-    public class ProgressDialog : IProgressDialog, INotifyPropertyChanged
+    readonly ProgressDialogConfig config;
+    ProgressContentDialog dialog;
+
+    readonly Func<Action, Task> dispatcher;
+
+    public ProgressDialog(ProgressDialogConfig config, Func<Action, Task> dispatcher = null)
     {
-        readonly ProgressDialogConfig config;
-        ProgressContentDialog dialog;
+        this.config = config;
+        Cancel = new Command(() => config.OnCancel?.Invoke());
 
-        readonly Func<Action, Task> dispatcher;
+        this.dispatcher = dispatcher ?? new Func<Action, Task>(x => CoreApplication
+            .MainView
+            .CoreWindow
+            .Dispatcher
+            .RunAsync(CoreDispatcherPriority.Normal, () => x())
+            .AsTask()
+        );
+    }
 
-        public ProgressDialog(ProgressDialogConfig config, Func<Action, Task> dispatcher = null)
+
+    public bool IsShowing { get; private set; }
+
+
+    int percent;
+    public int PercentComplete
+    {
+        get { return percent; }
+        set
         {
-            this.config = config;
-            this.Cancel = new Command(() => config.OnCancel?.Invoke());
-
-            // Look into this later
-            //this.dispatcher = dispatcher ?? new Func<Action, Task>(x => AppWindow
-            //    .Create()
-            //    .CoreWindow
-            //    .Dispatcher
-            //    .RunAsync(CoreDispatcherPriority.Normal, () => x())
-            //    .AsTask()
-            //);
+            if (value > 100)
+                percent = 100;
+            else if (value < 0)
+                percent = 0;
+            else
+                percent = value;
+            Change();
+            Change("PercentCompleteString");
         }
+    }
+
+    public string PercentCompleteString
+    {
+        get { return percent + "%"; }
+    }
 
 
-        public bool IsShowing { get; private set; }
+    public string CancelText => config.CancelText;
+    public bool IsIndeterministic => !config.IsDeterministic;
+    public Visibility TextPercentVisibility => config.IsDeterministic ? Visibility.Visible : Visibility.Collapsed;
 
 
-        int percent;
-        public int PercentComplete
+    string title;
+    public string Title
+    {
+        get { return title; }
+        set
         {
-            get { return this.percent; }
-            set
-            {
-                if (value > 100)
-                    this.percent = 100;
-                else if (value < 0)
-                    this.percent = 0;
-                else
-                    this.percent = value;
-                this.Change();
-                this.Change("PercentCompleteString");
-            }
+            title = value;
+            Change();
         }
+    }
 
-        public string PercentCompleteString
+
+    public void Dispose()
+    {
+        Hide();
+    }
+
+
+    public void Hide()
+    {
+        if (!IsShowing)
+            return;
+
+        IsShowing = false;
+        Dispatch(() => dialog.Hide());
+    }
+
+
+    public void Show()
+    {
+        if (IsShowing)
+            return;
+
+        IsShowing = true;
+        Dispatch(() =>
         {
-            get { return this.percent + "%"; }
-        }
+            if (dialog == null)
+                dialog = new ProgressContentDialog { DataContext = this };
+
+            _ = dialog.ShowAsync();
+        });
+    }
 
 
-        public string CancelText => this.config.CancelText;
-        public bool IsIndeterministic => !this.config.IsDeterministic;
-        public Visibility TextPercentVisibility => this.config.IsDeterministic ? Visibility.Visible : Visibility.Collapsed;
+    void Change([CallerMemberName] string property = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+    }
 
 
-        string title;
-        public string Title
-        {
-            get { return this.title; }
-            set
-            {
-                this.title = value;
-                this.Change();
-            }
-        }
+    public ICommand Cancel { get; }
+    public Visibility CancelVisibility => config.OnCancel == null
+        ? Visibility.Collapsed
+        : Visibility.Visible;
 
 
-        public void Dispose()
-        {
-            this.Hide();
-        }
+    public event PropertyChangedEventHandler PropertyChanged;
 
 
-        public void Hide()
-        {
-            if (!this.IsShowing)
-                return;
-
-            this.IsShowing = false;
-            this.Dispatch(() => this.dialog.Hide());
-        }
-
-
-        public void Show()
-        {
-            if (this.IsShowing)
-                return;
-
-            this.IsShowing = true;
-            this.Dispatch(() =>
-            {
-                if (this.dialog == null)
-                    this.dialog = new ProgressContentDialog { DataContext = this };
-
-                _ = dialog.ShowAsync();
-            });
-        }
-
-
-        void Change([CallerMemberName] string property = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
-
-
-        public ICommand Cancel { get; }
-        public Visibility CancelVisibility => this.config.OnCancel == null
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        protected virtual void Dispatch(Action action)
-        {
-            this.dispatcher.Invoke(action);
-        }
+    protected virtual void Dispatch(Action action)
+    {
+        dispatcher.Invoke(action);
     }
 }

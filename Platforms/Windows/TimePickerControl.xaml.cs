@@ -1,19 +1,16 @@
-﻿using System;
-using Microsoft.UI.Xaml.Controls;
-using Button = Microsoft.UI.Xaml.Controls.Button;
+﻿using Button = Microsoft.UI.Xaml.Controls.Button;
 
-namespace Maui.UserDialogs
+namespace Maui.UserDialogs;
+
+public sealed partial class TimePickerControl
 {
-    public sealed partial class TimePickerControl
+    public TimePickerControl()
     {
-        public TimePickerControl()
-        {
-            this.InitializeComponent();
-        }
-
-
-        public Button OkButton => this.btnOk;
-        public Button CancelButton => this.btnCancel;
-        public Microsoft.UI.Xaml.Controls.TimePicker TimePicker => this.timePicker;
+        this.InitializeComponent();
     }
+
+
+    public Button OkButton => this.btnOk;
+    public Button CancelButton => this.btnCancel;
+    public Microsoft.UI.Xaml.Controls.TimePicker TimePicker => this.timePicker;
 }
