@@ -19,8 +19,8 @@ namespace Maui.UserDialogs.Builders
 
             if (config.SelectedTime != null)
             {
-                picker.CurrentHour = new Integer(config.SelectedTime.Value.Hours);
-                picker.CurrentMinute = new Integer(config.SelectedTime.Value.Minutes);
+                picker.Hour = config.SelectedTime.Value.Hours;
+                picker.Minute = config.SelectedTime.Value.Minutes;
             }
 
             var is24Hour = config.Use24HourClock ?? DateFormat.Is24HourFormat (activity);
@@ -32,7 +32,7 @@ namespace Maui.UserDialogs.Builders
                     config.CancelText,
                     (sender, args) =>
                     {
-                        var ts = new TimeSpan(0, picker.CurrentHour.IntValue(), picker.CurrentMinute.IntValue(), 0);
+                        var ts = new TimeSpan(0, picker.Hour, picker.Minute, 0);
                         config.OnAction?.Invoke(new TimePromptResult(false, ts));
                     }
                 );
@@ -41,7 +41,7 @@ namespace Maui.UserDialogs.Builders
                 config.OkText,
                 (sender, args) =>
                 {
-                    var ts = new TimeSpan(0, picker.CurrentHour.IntValue(), picker.CurrentMinute.IntValue(), 0);
+                    var ts = new TimeSpan(0, picker.Hour, picker.Minute, 0);
                     config.OnAction?.Invoke(new TimePromptResult(true, ts));
                 }
             );

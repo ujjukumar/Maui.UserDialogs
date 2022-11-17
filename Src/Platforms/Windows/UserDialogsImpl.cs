@@ -217,12 +217,7 @@ namespace Maui.UserDialogs
                 DataContext = vm
             };
 
-            return this.DispatchAndDispose(
-                //config.UwpSubmitOnEnterKey,
-                //config.UwpCancelOnEscKey,
-                () => dlg.ShowAsync(),
-                dlg.Hide
-            );
+            return this.DispatchAndDispose(() => dlg.ShowAsync().GetResults(), dlg.Hide);
         }
 
 

@@ -135,6 +135,7 @@ namespace Maui.UserDialogs
             dialog.Window.AddFlags(WindowManagerFlags.NotFocusable);
         }
 
+        [Obsolete]
         private void AfterShow(Dialog dialog)
         {
             if (dialog == null)
